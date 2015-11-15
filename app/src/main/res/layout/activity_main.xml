@@ -15,15 +15,17 @@
         android:text="New Button"
         android:id="@+id/bAdd"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="39dp" />
+        android:layout_marginTop="39dp"
+        android:onClick="onClick"/>
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/etPurchase"
+        android:id="@+id/etCategory"
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/bAdd"
         android:layout_alignEnd="@+id/bAdd"
         android:layout_alignLeft="@+id/bAdd"
         android:layout_alignStart="@+id/bAdd" />
+
 </RelativeLayout>
