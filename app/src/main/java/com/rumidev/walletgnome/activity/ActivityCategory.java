@@ -1,4 +1,4 @@
-package com.rumidev.walletgnome;
+package com.rumidev.walletgnome.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,13 +7,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.rumidev.walletgnome.R;
 import com.rumidev.walletgnome.database.CategoriesDataSource;
 import com.rumidev.walletgnome.database.DatabaseHelper;
 import com.rumidev.walletgnome.model.Category;
 
-import java.util.List;
-
-public class MainActivity extends Activity {
+public class ActivityCategory extends Activity {
 
     private EditText etCategory;
     private Button bAdd;
@@ -24,7 +23,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_category);
 
         dbHelper = DatabaseHelper.getInstance(this);
         categoriesDAO = new CategoriesDataSource(this);
