@@ -1,13 +1,17 @@
 package com.rumidev.walletgnome.model;
 
+import android.graphics.Color;
+
+import java.io.Serializable;
+
 /**
  * Created by Kamila on 2015-11-04.
  */
-public class Category {
+public class Category implements Serializable{
 
     private long id = -1;
     private String name;
-    private int colour;
+    private int color;
 
     public long getId() {
         return id;
@@ -25,12 +29,12 @@ public class Category {
         this.name = name;
     }
 
-    public int getColour() {
-        return colour;
+    public int getColor() {
+        return color;
     }
 
-    public void setColour(int colour) {
-        this.colour = colour;
+    public void setColor(int colour) {
+        this.color = colour;
     }
 
     @Override
@@ -38,7 +42,7 @@ public class Category {
         return "Category{" +
                 "id=" + id +
                 ", name='" + name +
-                ", colour=" + colour +'\'' +
+                ", color=" + color +'\'' +
                 '}';
     }
 }

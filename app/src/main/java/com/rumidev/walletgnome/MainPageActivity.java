@@ -51,9 +51,10 @@ public class MainPageActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        Intent intent;
 
         if (id == R.id.nav_categories) {
-            Intent intent = new Intent(this, ActivityCategory.class);
+            intent = new Intent(this, ActivityCategory.class);
             startActivity(intent);
         }
 

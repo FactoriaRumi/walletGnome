@@ -1,51 +1,52 @@
 package com.rumidev.walletgnome.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 
 import com.rumidev.walletgnome.R;
 import com.rumidev.walletgnome.database.CategoriesDataSource;
 import com.rumidev.walletgnome.database.DatabaseHelper;
 import com.rumidev.walletgnome.model.Category;
+import com.rumidev.walletgnome.utils.adapters.CategoriesListAdapter;
 
-public class ActivityCategory extends Activity {
+public class ActivityCategory extends Activity implements AdapterView.OnItemClickListener{
 
-    private EditText etCategory;
-    private Button bAdd;
+    public static final String CATEGORY_NEW = "CategoryNew";
+
+    public static final String CATEGORY = "Category";
+
+    private ListView lvCategories;
+    private FloatingActionButton fabAddCategory;
 
     private CategoriesDataSource categoriesDAO;
-    private DatabaseHelper dbHelper;
+    private CategoriesListAdapter listAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 
-        dbHelper = DatabaseHelper.getInstance(this);
         categoriesDAO = new CategoriesDataSource(this);
 
-        etCategory = (EditText) findViewById(R.id.etCategory);
-        bAdd = (Button) findViewById(R.id.bAdd);
-    }
+        lvCategories = (ListView) findViewById(R.id.lvCategories);
+        fabAddCategory = (FloatingActionButton) findViewById(R.id.bAddCategory);
 
-
-
-    public void onClick(View view) {
-
-        Category category = null;
-        if(view.getId() == R.id.bAdd) {
-            category = new Category();
-            category.setName(etCategory.getText().toString());
-            categoriesDAO.addCategory(category);
-
-        }
-        for(Category it : categoriesDAO.getAllCategories()) {
-            Log.d("CATEGORIES", it.toString());
-        }
+        fabAddCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), ActivityCategoryEdit.class);
+                intent.putExtra(CATEGORY_NEW, true);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -57,6 +58,18 @@ public class ActivityCategory extends Activity {
     @Override
     protected void onResume() {
         categoriesDAO.openReadable();
+        listAdapter = new CategoriesListAdapter(this, categoriesDAO.getAllCategories());
+        lvCategories.setAdapter(listAdapter);
+        lvCategories.setOnItemClickListener(this);
         super.onResume();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Category category = (Category) listAdapter.getItem(position);
+        Intent intent = new Intent(view.getContext(), ActivityCategoryEdit.class);
+        intent.putExtra(CATEGORY_NEW, false);
+        intent.putExtra(CATEGORY, category);
+        startActivity(intent);
     }
 }

@@ -3,6 +3,7 @@ package com.rumidev.walletgnome.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by Kamila on 2015-11-03.
@@ -14,8 +15,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "wallet.db";
     private static final int DATABASE_VERSION = 1;
 
-    private CategoriesDataSource categoriesDataSource;
-
     private DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -24,6 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if(instance == null) {
             instance = new DatabaseHelper(context.getApplicationContext());
         }
+        Log.d("DATABASE_HELPER", instance.toString());
 
         return instance;
     }
@@ -37,10 +37,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
         //TODO change when DB will be solid
-        if(categoriesDataSource != null) {
-            sqLiteDatabase.execSQL(categoriesDataSource.dropCategories());
-            sqLiteDatabase.execSQL(categoriesDataSource.createCategoriesTableQuery());
-        }
+        sqLiteDatabase.execSQL(CategoriesDataSource.dropCategories());
+        sqLiteDatabase.execSQL(CategoriesDataSource.createCategoriesTableQuery());
     }
 
     private String createExpensesTable() {

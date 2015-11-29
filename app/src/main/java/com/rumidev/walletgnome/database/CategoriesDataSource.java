@@ -66,18 +66,15 @@ public class CategoriesDataSource {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_NAME, category.getName());
-        contentValues.put(KEY_COLOUR, category.getColour());
+        contentValues.put(KEY_COLOUR, category.getColor());
 
         long insertId = database.insert(TABLE_NAME, null, contentValues);
         category.setId(insertId);
-
-//        close();
 
         return category;
     }
 
     public Category getCategory(long id) {
-//        openReadable();
 
         Cursor cursor = database.query(TABLE_NAME, COLUMNS, " id = ?", new String[]{String.valueOf(id)}, null, null, null, null);
         if(cursor != null) {
@@ -87,12 +84,11 @@ public class CategoriesDataSource {
         Category category = new Category();
         category.setId(Long.parseLong(cursor.getString(0)));
         category.setName(cursor.getString(1));
-        category.setColour(cursor.getInt(2));
+        category.setColor(cursor.getInt(2));
 
         Log.d("getCategory(" + id + ")", category.toString());
 
         cursor.close();
-//        close();
 
         return category;
     }
@@ -100,10 +96,26 @@ public class CategoriesDataSource {
     public void deleteCategory(Category category) {
         Log.d("deleteCategory", category.toString());
 
+        openWritable();
+
         long id = category.getId();
-        if(id > 0) {
-            database.delete(TABLE_NAME, KEY_ID + " = " + id, null);
+        if(id > -1) {
+            database.delete(TABLE_NAME, KEY_ID + " = ?", new String[]{String.valueOf(id)});
             Log.d("deleteCategory", "DELETE SUCCESSFUL");
+        }
+    }
+
+    public void updateCategory(Category category) {
+        Log.d("updateCategory", category.toString());
+
+        openWritable();
+
+        if(category.getId() > -1) {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(KEY_NAME, category.getName());
+            contentValues.put(KEY_COLOUR, category.getColor());
+
+            database.update(TABLE_NAME, contentValues, KEY_ID + " = ?", new String[]{String.valueOf(category.getId())});
         }
     }
 
@@ -117,7 +129,7 @@ public class CategoriesDataSource {
             Category category = new Category();
             category.setId(cursor.getLong(0));
             category.setName(cursor.getString(1));
-            category.setColour(cursor.getInt(2));
+            category.setColor(cursor.getInt(2));
             categories.add(category);
             cursor.moveToNext();
         }
